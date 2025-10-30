@@ -1,0 +1,49 @@
+# Node.js / JavaScript project .gitignore
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+public/build/
+
+# Frameworks / Bundlers
+.next/
+.nuxt/
+.vite/
+.rollup.cache/
+.cache/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Environment files
+.env
+.env.*.local
+
+# Coverage
+coverage/
+
+# Lockfiles (uncomment if you want to ignore them)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Editor / OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Misc
+.pnp/
+.pnp.js
+.sass-cache/
