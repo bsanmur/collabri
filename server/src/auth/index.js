@@ -39,6 +39,7 @@ router.post("/register", async (req, res) => {
 
 // Login
 router.post("/login", async (req, res) => {
+  console.log("Login attempt:", req.body);
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "Campos requeridos." });

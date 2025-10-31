@@ -1,9 +1,16 @@
 <template>
-  <div>
-    <h2>Reportes</h2>
-    <div v-if="generating">Generando reporte... (ID: {{ lastReportId }})</div>
-    <div v-if="reportStatus">Estado reporte: {{ reportStatus.status }} <span v-if="reportStatus.result_url">| <a :href="reportStatus.result_url" target="_blank">descargar</a></span></div>
-    <button @click="generateReport" :disabled="generating">Solicitar reporte PDF</button>
+  <div class="space-y-4">
+    <h2 class="text-xl font-semibold">Reportes</h2>
+    <Card>
+      <div class="p-4 space-y-2">
+        <div v-if="generating" class="text-sm text-muted-foreground">Generando reporte... (ID: {{ lastReportId }})</div>
+        <div v-if="reportStatus" class="text-sm">
+          Estado: <span class="font-medium">{{ reportStatus.status }}</span>
+          <span v-if="reportStatus.result_url"> | <a :href="reportStatus.result_url" target="_blank" class="text-primary underline">descargar</a></span>
+        </div>
+        <Button @click="generateReport" :disabled="generating">Solicitar reporte PDF</Button>
+      </div>
+    </Card>
   </div>
 </template>
 
@@ -11,9 +18,13 @@
 import { ref } from "vue";
 import api from "../../../lib/api";
 import { toast } from "vue-sonner";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const routeId = () => {
+  
   try {
+    console.log("Extrayendo ID de ruta...", window.location.pathname.split("/")[2]);
     return window.location.pathname.split("/")[2];
   } catch {
     return null;

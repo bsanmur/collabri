@@ -20,6 +20,9 @@ function requireAuth(req, res, next) {
 
 // GET /api/reports/:reportId/status
 router.get('/:reportId/status', requireAuth, async (req, res) => {
+
+  console.log("Consultando estado del reporte:", req.params.reportId);
+
   const db = await getDB();
   const { reportId } = req.params;
   const userId = req.user.id;

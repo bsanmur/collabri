@@ -6,7 +6,7 @@ const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'changeme';
 
 function requireAuth(req, res, next) {
-  const header = req.headers.authorization;
+  const header = req.headers.authorization;  
   if (!header || !header.startsWith('Bearer '))
     return res.status(401).json({ message: 'No autorizado' });
   let payload;

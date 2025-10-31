@@ -1,20 +1,33 @@
 <template>
-  <div v-if="open" class="fixed inset-0 flex items-center justify-center">
-    <div class="bg-white p-4 border">
-      <h3>Crear proyecto</h3>
-      <input v-model="name" placeholder="Nombre del proyecto" />
-      <div class="mt-2">
-        <button @click="create">Crear</button>
-        <button @click="$emit('close')">Cancelar</button>
+  <Dialog :open="open" @update:open="val => !val && $emit('close')">
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Crear proyecto</DialogTitle>
+        <DialogDescription>Define el nombre del nuevo proyecto</DialogDescription>
+      </DialogHeader>
+      <div class="space-y-3">
+        <div class="space-y-2">
+          <Label for="project-name">Nombre</Label>
+          <Input id="project-name" v-model="name" placeholder="Nombre del proyecto" />
+        </div>
       </div>
-    </div>
-  </div>
+      <DialogFooter>
+        <Button @click="create">Crear</Button>
+        <Button variant="secondary" @click="$emit('close')">Cancelar</Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useProjectsStore } from "../features/projects/store/useProjectsStore";
-import { toast } from "sonner";
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+// Dialog components (shadcn/vue)
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { toast } from "vue-sonner";
 const props = defineProps({ open: Boolean });
 const emit = defineEmits(["close"]);
 const name = ref("");

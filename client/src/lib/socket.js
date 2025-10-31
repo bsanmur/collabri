@@ -2,18 +2,24 @@ import { io } from "socket.io-client";
 const listeners = new Set();
 let socket = null;
 
-function getSocketUrl() {
+function getSocketOptions() {
   const token = localStorage.getItem("token");
-  // socket.io-client distinguirá ws/wss
   return {
     path: '/ws',
-    auth: { token }
+    auth: { token },
+    withCredentials: true,
+    transports: ['websocket']
   };
+}
+
+function getSocketUrl() {
+  // Conectar explícitamente al backend (puerto 3000)
+  return 'http://localhost:3000';
 }
 
 export function connect() {
   if (socket && socket.connected) return;
-  socket = io(undefined, getSocketUrl()); // host undefined usa la origin
+  socket = io(getSocketUrl(), getSocketOptions());
   socket.on('connect', () => {
     listeners.forEach((l) => l({ type: "ws:open" }));
   });

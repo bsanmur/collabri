@@ -13,14 +13,17 @@
         <div v-else>
           <nav class="mb-4">
             <router-link
+              class="mr-10"
               :to="{ name: 'ProjectKanban', params: { id: project.id } }"
               >Kanban</router-link
             >
             <router-link
+              class="mr-10"
               :to="{ name: 'ProjectReports', params: { id: project.id } }"
               >Reportes</router-link
             >
             <router-link
+              class="mr-10"
               :to="{ name: 'ProjectCollaborators', params: { id: project.id } }"
               >Colaboradores</router-link
             >

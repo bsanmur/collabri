@@ -3,21 +3,14 @@ import { useAuthStore } from "../features/auth/store/useAuthStore";
 
 const routes = [
   {
-    path: "/auth",
-    component: () =>
-      import("../features/auth/views/LoginView.vue"),
-    children: [
-      {
-        path: "login",
-        name: "Login",
-        component: () => import("../features/auth/views/LoginView.vue"),
-      },
-      {
-        path: "register",
-        name: "Register",
-        component: () => import("../features/auth/views/RegisterView.vue"),
-      },
-    ],
+    path: "/auth/login",
+    name: "Login",
+    component: () => import("../features/auth/views/LoginView.vue"),
+  },
+  {
+    path: "/auth/register",
+    name: "Register",
+    component: () => import("../features/auth/views/RegisterView.vue"),
   },
   {
     path: "/projects",
@@ -51,9 +44,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log("Navegando a:", to.name);
+  
   const auth = useAuthStore();
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    console.log("Redirigiendo a Login");
+    
     return next({ name: "Login" });
+  }
+  // si ya está autenticado y quiere ir a /auth/*, redirigir a /projects
+  if ((to.name === 'Login' || to.name === 'Register') && auth.isAuthenticated) {
+    console.log("Redirigiendo a /projects");
+    return next({ path: '/projects' });
   }
   next();
 });

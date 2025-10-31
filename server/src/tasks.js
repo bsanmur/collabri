@@ -103,4 +103,17 @@ router.put('/:taskId', requireAuth, async (req, res) => {
   res.json(updated);
 });
 
+// DELETE /api/projects/:projectId/tasks/:taskId
+router.delete('/:taskId', requireAuth, async (req, res) => {
+  const db = await getDB();
+  const { projectId, taskId } = req.params;
+  const userId = req.user.id;
+  const member = await db.get('SELECT id FROM collaborators WHERE project_id=? AND user_id=?', projectId, userId);
+  if (!member) return res.status(403).json({ message: 'Sin acceso' });
+  const task = await db.get('SELECT * FROM tasks WHERE id=? AND project_id=?', taskId, projectId);
+  if (!task) return res.status(404).json({ message: 'No encontrada' });
+  await db.run('DELETE FROM tasks WHERE id=?', taskId);
+  res.json({ message: 'Tarea eliminada' });
+});
+
 module.exports = router;
