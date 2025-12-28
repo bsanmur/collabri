@@ -71,4 +71,26 @@ async function pollStatus() {
     generating.value = false;
   }
 }
+
+const client = getReportClient();
+
+const payload = {
+  projectId: String(projectId),
+  requestedBy: String(userId),
+  email: String(email),
+};
+
+console.log(
+  "Generando reporte para el proyecto, payload enviado a report-module:",
+  payload
+);
+
+client.GenerateReport(payload, (err, resp) => {
+  if (err) return res.status(500).json({ message: "Error solicitando reporte" });
+  // Si el module de reportes devolvió los datos, reenvíalos al cliente para renderizar/imprimir
+  if (resp && resp.status === "done" && resp.report) {
+    return res.status(200).json({ reportId: resp.report_id, report: resp.report });
+  }
+  return res.status(500).json({ message: resp?.message || "No se pudo generar el reporte" });
+});
 </script>
